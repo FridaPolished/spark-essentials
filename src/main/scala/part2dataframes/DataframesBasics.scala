@@ -1,7 +1,7 @@
 package part2dataframes
 
 import org.apache.spark.sql.{Row, SparkSession}
-import org.apache.spark.sql.types.{DoubleType, LongType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.{DoubleType, IntegerType, LongType, StringType, StructField, StructType}
 
 object DataframesBasics extends App {
 
@@ -76,5 +76,44 @@ object DataframesBasics extends App {
   manualCarsDFWithImplicits.printSchema()
 
 
+  /**
+    * Exercise:
+    * 1) create a manual dataframe describing smartphones
+    * - brand
+    * - model
+    * - screen size
+    * - camera megaapixels
+    */
 
+  val phones = Seq(
+    ("iphone", "sampleModel1", 10, 1053),
+    ("samsung", "sampleModel2", 6, 2053),
+    ("tcl", "sampleModel3", 13, 1253),
+    ("Huawei", "sampleModel4", 12, 1053),
+    ("LG", "sampleModel5", 9, 1553)
+  )
+
+//  val df2 = spark.createDataFrame(phones)
+  val df2 = phones.toDF("Brand", "Model", "Screen size", "camera megapixels")
+
+  df2.show()
+  df2.printSchema()
+
+  /**
+    * 2. Read another file from the data/folder
+    *  - print schema
+    *  -count the number of rows, call count()
+    * */
+
+  val moviesDF = spark.read
+    .format("json")
+    .option("inferSchema", "true")
+    .load("src/main/resources/data/movies.json")
+
+  moviesDF.show()
+  moviesDF.printSchema()
+  println(s"Number of movies rows in the DF ${moviesDF.count()}")
+
+  val x = moviesDF.count()
+  println(x)
 }

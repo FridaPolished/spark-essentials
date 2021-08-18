@@ -8,5 +8,5 @@ object ScalaRecap extends App {
   val theUnit = println("hi") //Unit
 
   def myFunc(x: Int) = 42
-  
+
 }
